@@ -2,4 +2,29 @@
   color: #7e8185;
   display: flex;
   align-items: flex-start;
+  img {
+    position: absolute;
+    top: 8px;
+    left: 21px;
+    opacity: 0px;
+  }
+  h3 {
+    position: absolute;
+    top: 11px;
+    left: 69px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    margin: 0px;
+  }
+  hr {
+    position: absolute;
+    width: 100%;
+    top: 48px;
+    border: 1px solid #d1d1d1;
+    margin: 0px;
+  }
 }
