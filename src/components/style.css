@@ -1,0 +1,22 @@
+#productList {
+  position: absolute;
+  width: 64.9%;
+  height: 86%;
+  /* height: 1027px; */
+  top: 75px;
+  left: 253px;
+}
+#products {
+  display: flex;
+  gap: 20px;
+}
+
+#productListContainer h3 {
+  background-color: red;
+}
+
+#productListContainer {
+  background-color: gray;
+  padding: 10px;
+}
+

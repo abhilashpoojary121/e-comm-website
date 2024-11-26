@@ -4,6 +4,18 @@
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: "SF Pro Text Medium";
+  src: url("./assets/fonts/SF-Pro-Text-Medium.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "SF Pro Text Light";
+  src: url("./assets/fonts/SF-Pro-Text-Light.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
 body {
   margin: 0;
   font-family: "SF Pro Text", sans-serif;
