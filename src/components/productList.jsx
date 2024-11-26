@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { v4 } from "uuid";
+import Button from "@mui/material/Button";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Input from "../common-components/Input/Input";
 import dragdots from "../assets/media/dragdots.svg";
@@ -34,13 +35,9 @@ const ProductList = () => {
       {productList.map((item, index) => (
         <Product index={index + 1} title={item.title} key={item.id} />
       ))}
-      <button
-        type="button"
-        className="btn btn-outline-primary"
-        onClick={handleAddProduct}
-      >
+      <Button variant="outlined" onClick={handleAddProduct}>
         Add Product
-      </button>
+      </Button>
     </div>
   );
 };

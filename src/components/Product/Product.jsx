@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "@mui/material/Button";
 import Input from "../../common-components/Input/Input";
 import dragdots from "../../assets/media/dragdots.svg";
 const Product = (props) => {
@@ -9,9 +10,7 @@ const Product = (props) => {
         <img src={dragdots} width="7px" height="14px"></img>
         <span>{`${index}.`}</span>
         <Input />
-        <button type="button" className="btn btn-primary">
-          Add Discount
-        </button>
+        <Button variant="contained">Add Discount</Button>
       </div>
     </React.Fragment>
   );

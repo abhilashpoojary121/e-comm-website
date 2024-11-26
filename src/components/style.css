@@ -10,13 +10,3 @@
   display: flex;
   gap: 20px;
 }
-
-#productListContainer h3 {
-  background-color: red;
-}
-
-#productListContainer {
-  background-color: gray;
-  padding: 10px;
-}
-
