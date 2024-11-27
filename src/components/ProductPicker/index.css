@@ -1,0 +1,16 @@
+#searchBar {
+  width: 600px;
+  height: 32px;
+  border: 1px solid #00000012;
+  margin: 0 auto;
+  img {
+    padding: 0px 5px 0px 20px;
+    vertical-align: middle;
+  }
+}
+#modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 10px 10px 0px;
+  gap: 10px;
+}

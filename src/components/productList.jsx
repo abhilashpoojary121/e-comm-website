@@ -5,9 +5,14 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Input from "../common-components/Input/Input";
 import dragdots from "../assets/media/dragdots.svg";
 import Product from "./Product/Product";
+import ProductPicker from "./ProductPicker/ProductPicker";
 import "./style.css";
 
 const ProductList = () => {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const initialData = [
     {
       id: 1,
@@ -38,6 +43,8 @@ const ProductList = () => {
       <Button variant="outlined" onClick={handleAddProduct}>
         Add Product
       </Button>
+      <Button onClick={handleOpen}>Open modal</Button>
+      <ProductPicker open={open} handleClose={handleClose} />
     </div>
   );
 };
