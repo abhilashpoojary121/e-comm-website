@@ -37,13 +37,20 @@ const ProductList = () => {
     <div id="productList">
       <h3>Add Products</h3>
       <h4>Product</h4>
+
       {productList.map((item, index) => (
-        <Product index={index + 1} title={item.title} key={item.id} />
+        <Product
+          index={index + 1}
+          title={item.title}
+          key={item.id}
+          handleOpen={handleOpen}
+        />
       ))}
-      <Button variant="outlined" onClick={handleAddProduct}>
-        Add Product
-      </Button>
-      <Button onClick={handleOpen}>Open modal</Button>
+      <div id="button-container">
+        <Button variant="outlined" onClick={handleAddProduct}>
+          Add Product
+        </Button>
+      </div>
       <ProductPicker open={open} handleClose={handleClose} />
     </div>
   );

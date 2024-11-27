@@ -9,4 +9,14 @@
 #products {
   display: flex;
   gap: 20px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+#button-container {
+  width: 450px;
+  text-align: end;
+  margin-top: 20px;
+  button {
+    margin-right: 10px;
+  }
 }

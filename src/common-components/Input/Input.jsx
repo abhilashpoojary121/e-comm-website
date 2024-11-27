@@ -2,7 +2,8 @@ import React from "react";
 import edit from "../../assets/media/edit.svg";
 import "./index.css";
 
-const Input = ({ value }) => {
+const Input = (props) => {
+  const { value, handleOpen } = props;
   return (
     <React.Fragment>
       <div id="inputContainer">
@@ -13,7 +14,13 @@ const Input = ({ value }) => {
           disabled
         ></input>
         <button>
-          <img src={edit} width={"15.98px"} height={"16px"}></img>
+          <img
+            src={edit}
+            width={"15.98px"}
+            height={"16px"}
+            onClick={handleOpen}
+            style={{ cursor: "pointer" }}
+          ></img>
         </button>
       </div>
     </React.Fragment>
