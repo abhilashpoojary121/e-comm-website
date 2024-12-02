@@ -1,0 +1,30 @@
+#parent-checkbox-container {
+  display: flex;
+  margin-left: 20px;
+  flex-direction: row;
+  img {
+    width: 36px;
+    height: 36px;
+    border-radius: 4px;
+    margin: 0px 10px;
+  }
+}
+
+#child-checkbox-container {
+  display: flex;
+  margin-left: 60px;
+  flex-direction: row;
+  padding-right: 30px;
+  justify-content: space-between;
+}
+
+#item-info {
+  span:first-child {
+    padding-right: 40px;
+  }
+}
+
+#loader-container {
+  padding: 40px;
+  text-align: center;
+}

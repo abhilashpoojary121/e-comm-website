@@ -18,7 +18,9 @@ const Input = (props) => {
             src={edit}
             width={"15.98px"}
             height={"16px"}
-            onClick={handleOpen}
+            onClick={() => {
+              handleOpen();
+            }}
             style={{ cursor: "pointer" }}
           ></img>
         </button>

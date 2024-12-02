@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useProductsContext } from "../../context/ProductsContext";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import { DataGrid } from "@mui/x-data-grid";
+import CheckboxContainer from "../../common-components/CheckboxContainer/CheckBoxContainer";
 import "./index.css";
 import searchIcon from "../../assets/media/searchIcon.svg";
 const style = {
@@ -25,37 +26,64 @@ const style = {
   },
 };
 
-const cancelButtonStyle = {
-  width: "104px",
-  height: "32px",
-  fontSize: "14px",
-  borderRadius: "4px",
-  color: "#00000099",
-  border: "1px solid #00000066",
-  "&:hover": {
-    backgroundColor: "#00000042",
-  },
-};
-const addButtonStyle = {
-  width: "72px",
-  height: "32px",
-};
 const ProductPicker = (props) => {
-  const { handleClose, open } = props;
-  const columns = [
-    {
-      field: "id",
-      headerName: "ID",
-      flex: 1,
-      sortable: false,
-    },
-  ];
-  const rows = [
-    { id: 1, lastName: "Snow", firstName: "Jon", age: 35 },
-    { id: 2, lastName: "Lannister", firstName: "Cersei", age: 42 },
-    { id: 3, lastName: "Lannister", firstName: "Jaime", age: 45 },
-  ];
-  const handleAdd = () => {};
+  const { handleClose, open, setOpen, index } = props;
+  const [isLoading, setIsLoading] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const [responseData, setResponseData] = useState([]);
+  const { productsData, updateProducts } = useProductsContext();
+  useEffect(() => {
+    const getData = setTimeout(() => {
+      if (searchValue) {
+        getSearchedProducts();
+      }
+    }, 1000);
+
+    return () => clearTimeout(getData);
+  }, [searchValue]);
+
+  useEffect(() => {
+    console.log("productsData in Useeffect Producgtpciker", productsData);
+  }, [productsData]);
+  const getSearchedProducts = async () => {
+    setIsLoading(true);
+    const headers = {
+      "Content-Type": "application/json",
+      "x-api-key": "72njgfa948d9aS7gs5",
+    };
+    try {
+      const response = await fetch(
+        `http://stageapi.monkcommerce.app/task/products/search?search=${searchValue}&page=0&limit=1`,
+        {
+          method: "GET",
+          headers: headers,
+        }
+      );
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+
+      // Parse the response body as JSON
+      const result = await response.json();
+      setResponseData(result);
+      console.log("Fetched Data:", result);
+    } catch (err) {
+      console.log("error", err);
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
+    }
+    setIsLoading(false);
+  };
+  const handleAdd = (mappedData) => {
+    updateProducts(mappedData, index);
+    console.log("mappedData in add", mappedData);
+    setOpen(false);
+  };
+  const handleInputChange = (e) => {
+    setSearchValue(e.target.value);
+  };
+
   return (
     <React.Fragment>
       <Modal
@@ -69,36 +97,28 @@ const ProductPicker = (props) => {
           <hr />
           <div id="searchBar">
             <img src={searchIcon} />
-            <input type="text" placeholder="Search product" />
+            <input
+              type="text"
+              placeholder="Search product"
+              value={searchValue}
+              onChange={handleInputChange}
+              style={{ width: "90%" }}
+            />
           </div>
-          <hr />
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            // initialState={{ pagination: { paginationModel } }}
-            // pageSizeOptions={[5, 10]}
-            disableColumnMenu
-            disableColumnResize
-            columnSeparator={false}
-            checkboxSelection
-            sx={{
-              height: "auto",
-              border: 0,
-              "& .MuiDataGrid-columnSeparator": { display: "none" },
-            }}
+
+          <CheckboxContainer
+            responseData={responseData}
+            handleAdd={handleAdd}
+            handleClose={handleClose}
+            isLoading={isLoading}
           />
-          <div id="modal-footer">
-            <Button
-              variant="outlined"
-              onClick={handleClose}
-              sx={cancelButtonStyle}
-            >
-              Cancel
-            </Button>
-            <Button variant="contained" onClick={handleAdd} sx={addButtonStyle}>
-              Add
-            </Button>
-          </div>
+          {/* {isLoading ? (
+            <CheckboxContainer responseData={responseData} />
+          ) : (
+            <Box sx={{ display: "flex" }}>
+              <CircularProgress />
+            </Box>
+          )} */}
         </Box>
       </Modal>
     </React.Fragment>
