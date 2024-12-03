@@ -5,11 +5,11 @@ export const ProductsContext = createContext([]);
 export const ProductsProvider = ({ children }) => {
   const initialData = [{}];
   const [productsData, setProductsData] = useState(initialData);
+  const [index, setIndex] = useState(0);
 
-  const updateProducts = (updatedData, indexOfModal) => {
-    console.log("indexOdmodal", indexOfModal);
-    const updateProductData = productsData.map((item, index) => {
-      if (index === indexOfModal) {
+  const updateProducts = (updatedData) => {
+    const updateProductData = productsData.map((item, indexFromData) => {
+      if (indexFromData === index) {
         return { ...updatedData[0] };
       }
       return item;
@@ -20,9 +20,18 @@ export const ProductsProvider = ({ children }) => {
   const addProductContainer = () => {
     setProductsData([...productsData, {}]);
   };
+
+  const updateIndexOfContainer = (index) => {
+    setIndex(index);
+  };
   return (
     <ProductsContext.Provider
-      value={{ productsData, updateProducts, addProductContainer }}
+      value={{
+        productsData,
+        updateProducts,
+        addProductContainer,
+        updateIndexOfContainer,
+      }}
     >
       {children}
     </ProductsContext.Provider>

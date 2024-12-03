@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { v4 } from "uuid";
 import { useProductsContext } from "../../context/ProductsContext";
 import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
@@ -49,7 +50,6 @@ const CheckboxContainer = (props) => {
                   })),
           }))
     );
-    console.log("Data for checkboxes", mappedData);
   }, [responseData]);
 
   // Handle the parent checkbox state change
@@ -129,7 +129,7 @@ const CheckboxContainer = (props) => {
           ) : (
             mappedData.map((item) => {
               return (
-                <div key={item.id} id="checkbox-container">
+                <div key={v4()} id="checkbox-container">
                   <hr />
                   <div id="parent-checkbox-container">
                     <FormControlLabel
@@ -163,7 +163,7 @@ const CheckboxContainer = (props) => {
                     />
                   </div>
                   {item.variants.map((element) => (
-                    <React.Fragment>
+                    <div key={v4()}>
                       <hr />
                       <div id="child-checkbox-container">
                         <FormControlLabel
@@ -194,7 +194,7 @@ const CheckboxContainer = (props) => {
                           <span>{`₹${element.price}`}</span>
                         </div>
                       </div>
-                    </React.Fragment>
+                    </div>
                   ))}
                 </div>
               );
@@ -210,7 +210,6 @@ const CheckboxContainer = (props) => {
         <Button
           variant="contained"
           onClick={() => {
-            console.log("mappedData in add", mappedData);
             handleAdd(mappedData);
           }}
           sx={addButtonStyle}

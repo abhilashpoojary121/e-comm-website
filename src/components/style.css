@@ -10,7 +10,39 @@
   display: flex;
   gap: 20px;
   align-items: center;
-  margin-bottom: 20px;
+  margin-top: 20px;
+}
+#products-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 470px;
+}
+.variants-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 5px;
+  grid-column: 4 / 6;
+}
+
+#variant-button {
+  display: flex;
+  text-transform: none;
+  font-family: "SF Pro Text Light";
+  font-size: 12px;
+  span {
+    margin-right: 2px;
+    color: #006eff;
+    text-decoration: underline;
+    line-height: 21px;
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+  }
+  span,
+  img {
+    cursor: pointer;
+  }
 }
 #button-container {
   width: 450px;
@@ -19,4 +51,54 @@
   button {
     margin-right: 10px;
   }
+}
+
+#show-variant {
+  display: inherit;
+}
+#hide-variant {
+  display: none;
+}
+#variants-wrapper {
+  align-self: end;
+  padding-right: 33px;
+}
+
+.parent-grid-container {
+  display: grid;
+  grid-template-columns: max-content 30px max-content max-content max-content;
+  width: fit-content;
+  margin-top: 20px;
+  align-items: center;
+  #dragdots {
+    margin-right: 20px;
+  }
+  #disocunt-btn,
+  #closeIcon {
+    margin-left: 20px;
+  }
+}
+#child-grid-container {
+  width: auto;
+  justify-content: end;
+}
+.discountInput {
+  border: 1px solid #00000012;
+  width: 69px;
+  box-shadow: 0px 2px 4px 0px #0000001a;
+  &:focus-visible {
+    outline: 2px solid #008060;
+  }
+}
+#discount-dropdown {
+  width: 95px;
+  height: 33.6px;
+  margin-left: 5px;
+  &:focus-visible {
+    outline: 2px solid #008060;
+  }
+}
+
+#discount-fields {
+  margin-left: 20px;
 }

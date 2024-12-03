@@ -42,9 +42,6 @@ const ProductPicker = (props) => {
     return () => clearTimeout(getData);
   }, [searchValue]);
 
-  useEffect(() => {
-    console.log("productsData in Useeffect Producgtpciker", productsData);
-  }, [productsData]);
   const getSearchedProducts = async () => {
     setIsLoading(true);
     const headers = {
@@ -66,7 +63,6 @@ const ProductPicker = (props) => {
       // Parse the response body as JSON
       const result = await response.json();
       setResponseData(result);
-      console.log("Fetched Data:", result);
     } catch (err) {
       console.log("error", err);
       setIsLoading(false);
@@ -76,8 +72,7 @@ const ProductPicker = (props) => {
     setIsLoading(false);
   };
   const handleAdd = (mappedData) => {
-    updateProducts(mappedData, index);
-    console.log("mappedData in add", mappedData);
+    updateProducts(mappedData);
     setOpen(false);
   };
   const handleInputChange = (e) => {

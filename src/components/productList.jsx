@@ -16,26 +16,29 @@ const ProductList = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [showVariant, setShowVariant] = useState(false);
+  const [discountState, setDiscountState] = useState({});
 
-  const handleAddProduct = () => {
-    addProductContainer();
+  const handleToggleDiscountButton = (index) => {
+    setDiscountState((prevState) => ({
+      ...prevState,
+      [index]: !prevState[index], // Toggle the state for this product
+    }));
   };
-  useEffect(() => {
-    console.log("productsData", productsData);
-  }, []);
   return (
     <div id="productList">
       <h3>Add Products</h3>
       <h4>Product</h4>
       {productsData.map((item, index) => {
         return (
-          <div key={item.id}>
+          <div key={v4()} style={{ width: "fit-content" }}>
             <Product
               index={index}
               title={item.title}
               value={item.title}
-              key={item.id}
+              variants={item.variants}
               handleOpen={handleOpen}
+              handleToggleDiscountButton={handleToggleDiscountButton}
+              toggleDiscountButton={discountState[index] || false}
             />
             <ProductPicker
               open={open}
@@ -47,7 +50,7 @@ const ProductList = () => {
         );
       })}
       <div id="button-container">
-        <Button variant="outlined" onClick={handleAddProduct}>
+        <Button variant="outlined" onClick={() => addProductContainer()}>
           Add Product
         </Button>
       </div>

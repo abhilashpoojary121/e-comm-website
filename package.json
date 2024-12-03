@@ -16,6 +16,7 @@
     "uuid": "^11.0.3",
     "web-vitals": "^2.1.4"
   },
+  "proxy": "http://stageapi.monkcommerce.app",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
