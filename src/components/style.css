@@ -66,16 +66,20 @@
 
 .parent-grid-container {
   display: grid;
+  cursor: default;
   grid-template-columns: max-content 30px max-content max-content max-content;
   width: fit-content;
   margin-top: 20px;
   align-items: center;
   #dragdots {
+    cursor: grab;
     margin-right: 20px;
   }
   #disocunt-btn,
   #closeIcon {
+    cursor: pointer;
     margin-left: 20px;
+    vertical-align: middle;
   }
 }
 #child-grid-container {
