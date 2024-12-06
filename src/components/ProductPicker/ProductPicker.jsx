@@ -122,7 +122,7 @@ const ProductPicker = (props) => {
               style={{ width: "90%" }}
             />
           </div>
-
+          
           <CheckboxContainer
             responseData={responseData}
             handleAdd={handleAdd}

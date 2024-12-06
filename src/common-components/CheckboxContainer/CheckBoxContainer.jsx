@@ -28,6 +28,16 @@ const CheckboxContainer = (props) => {
   const { responseData, handleAdd, handleClose, isLoading } = props;
   const [mappedData, setMappedData] = useState([]);
 
+  //calculate total products to handle scroll +1 for parent
+  const totalProducts = mappedData.reduce(
+    (acc, item) => acc + item.variants.length + 1,
+    0
+  );
+
+  const parentProductsChecked = mappedData.filter((product) =>
+    product.variants.some((variant) => variant.checkedValue)
+  ).length;
+
   //checkbox functions
   useEffect(() => {
     setMappedData(
@@ -55,134 +65,85 @@ const CheckboxContainer = (props) => {
   // Handle the parent checkbox state change
   const handleParentChange = (event, parentId) => {
     const newCheckedValue = event.target.checked;
-    if (someChildrenChecked() && !allChildrenChecked()) {
-      setMappedData((prevData) =>
-        prevData.map((item) => {
-          if (item.id === parentId) {
-            return {
-              ...item,
-              checkedValue: false,
-              variants: item.variants.map((variant) => ({
-                ...variant,
-                checkedValue: false,
-              })),
-            };
-          }
-          return item;
-        })
-      );
-    } else {
-      setMappedData((prevData) =>
-        prevData.map((item) => {
-          if (item.id === parentId) {
-            return {
-              ...item,
-              checkedValue: newCheckedValue,
-              variants: item.variants.map((variant) => ({
-                ...variant,
-                checkedValue: newCheckedValue,
-              })),
-            };
-          }
-          return item;
-        })
-      );
-    }
-  };
-
-  const handleChildCheckbox = (id) => {
     setMappedData((prevData) =>
-      prevData.map((item) => ({
-        ...item,
-        variants: item.variants.map((variant) =>
-          variant.id === id
-            ? { ...variant, checkedValue: !variant.checkedValue }
-            : variant
-        ),
-      }))
+      prevData.map((item) => {
+        if (item.id === parentId) {
+          return {
+            ...item,
+            checkedValue: newCheckedValue,
+            variants: item.variants.map((variant) => ({
+              ...variant,
+              checkedValue: newCheckedValue,
+            })),
+          };
+        }
+        return item;
+      })
     );
   };
 
-  const allChildrenChecked = () => {
-    return mappedData.every((item) =>
-      item.variants.every((variant) => variant.checkedValue)
+  const handleChildCheckbox = (parentId, childId) => {
+    setMappedData((prevData) =>
+      prevData.map((item) => {
+        if (item.id === parentId) {
+          return {
+            ...item,
+            variants: item.variants.map((variant) =>
+              variant.id === childId
+                ? { ...variant, checkedValue: !variant.checkedValue }
+                : variant
+            ),
+          };
+        }
+        return item;
+      })
     );
   };
 
-  // Check if some child checkboxes are checked (used for parent checkbox indeterminate state)
-  const someChildrenChecked = () => {
-    return mappedData.some((item) =>
-      item.variants.some((variant) => variant.checkedValue)
-    );
+  const allChildrenChecked = (parentId) => {
+    const parentItem = mappedData.find((item) => item.id === parentId);
+    return parentItem.variants.every((variant) => variant.checkedValue);
+  };
+
+  // Check if some child checkboxes are checked for a parent
+  const someChildrenChecked = (parentId) => {
+    const parentItem = mappedData.find((item) => item.id === parentId);
+    return parentItem.variants.some((variant) => variant.checkedValue);
   };
 
   return (
     <React.Fragment>
-      {isLoading ? (
-        <div id="loader-container">
-          <CircularProgress />
-        </div>
-      ) : (
-        <React.Fragment>
-          {mappedData?.length === 0 ? (
-            <React.Fragment></React.Fragment>
-          ) : (
-            mappedData.map((item) => {
-              return (
-                <div
-                  key={v4()}
-                  id="checkbox-container"
-                  className={
-                    item?.variants.length > 7 ? "show-scroll" : "no-scroll"
-                  }
-                >
-                  <hr />
-                  <div id="parent-checkbox-container">
-                    <FormControlLabel
-                      id="parent-checkbox"
-                      label={item.title}
-                      control={
-                        <React.Fragment>
-                          <Checkbox
-                            checked={allChildrenChecked()}
-                            indeterminate={
-                              someChildrenChecked() && !allChildrenChecked()
-                            }
-                            onChange={(e) => handleParentChange(e, item.id)}
-                            sx={{
-                              width: "24px",
-                              height: "24px",
-                              padding: "6px 4.8px 6px 4.8px",
-                              borderRadius: "4px",
-                              color: "#008060",
-                              "&.Mui-checked": {
-                                color: "#008060",
-                              },
-                              "&.MuiCheckbox-indeterminate": {
-                                color: "#008060",
-                              },
-                            }}
-                          />
-                          <img src={item.imageSrc} />
-                        </React.Fragment>
-                      }
-                    />
-                  </div>
-                  {item.variants.map((element) => (
-                    <div key={v4()}>
-                      <hr />
-                      <div id="child-checkbox-container">
-                        <FormControlLabel
-                          key={element.id}
-                          label={element.title}
-                          control={
+      <div className={totalProducts > 7 ? "show-scroll" : "no-scroll"}>
+        {isLoading ? (
+          <div id="loader-container">
+            <CircularProgress />
+          </div>
+        ) : (
+          <React.Fragment>
+            {mappedData?.length === 0 ? (
+              <React.Fragment></React.Fragment>
+            ) : (
+              mappedData.map((item) => {
+                return (
+                  <div key={v4()} id="checkbox-container">
+                    <hr />
+                    <div id="parent-checkbox-container">
+                      <FormControlLabel
+                        id="parent-checkbox"
+                        label={item.title}
+                        control={
+                          <React.Fragment>
                             <Checkbox
-                              checked={element.checkedValue}
-                              onChange={() => handleChildCheckbox(element.id)}
+                              checked={allChildrenChecked(item.id)}
+                              indeterminate={
+                                someChildrenChecked(item.id) &&
+                                !allChildrenChecked(item.id)
+                              }
+                              onChange={(e) => handleParentChange(e, item.id)}
                               sx={{
                                 width: "24px",
                                 height: "24px",
-                                marginRight: "10px",
+                                padding: "6px 4.8px 6px 4.8px",
                                 borderRadius: "4px",
                                 color: "#008060",
                                 "&.Mui-checked": {
@@ -193,35 +154,82 @@ const CheckboxContainer = (props) => {
                                 },
                               }}
                             />
-                          }
-                        />
-                        <div id="item-info">
-                          <span>{`${element.inventory_quantity} available`}</span>
-                          <span>{`₹${element.price}`}</span>
+                            <img src={item.imageSrc} />
+                          </React.Fragment>
+                        }
+                      />
+                    </div>
+                    {item.variants.map((element) => (
+                      <div key={v4()}>
+                        <hr />
+                        <div id="child-checkbox-container">
+                          <FormControlLabel
+                            key={element.id}
+                            label={element.title}
+                            control={
+                              <Checkbox
+                                checked={element.checkedValue}
+                                onChange={() =>
+                                  handleChildCheckbox(item.id, element.id)
+                                }
+                                sx={{
+                                  width: "24px",
+                                  height: "24px",
+                                  marginRight: "10px",
+                                  borderRadius: "4px",
+                                  color: "#008060",
+                                  "&.Mui-checked": {
+                                    color: "#008060",
+                                  },
+                                  "&.MuiCheckbox-indeterminate": {
+                                    color: "#008060",
+                                  },
+                                }}
+                              />
+                            }
+                          />
+                          <div id="item-info">
+                            <span>{`${element.inventory_quantity} available`}</span>
+                            <span>{`₹${element.price}`}</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              );
-            })
-          )}
-        </React.Fragment>
-      )}
+                    ))}
+                  </div>
+                );
+              })
+            )}
+          </React.Fragment>
+        )}
+      </div>
       <hr />
       <div id="modal-footer">
-        <Button variant="outlined" onClick={handleClose} sx={cancelButtonStyle}>
-          Cancel
-        </Button>
-        <Button
-          variant="contained"
-          onClick={() => {
-            handleAdd(mappedData);
-          }}
-          sx={addButtonStyle}
-        >
-          Add
-        </Button>
+        {parentProductsChecked === 0 ? (
+          <div></div>
+        ) : (
+          <span>{`${parentProductsChecked} ${
+            parentProductsChecked === 1 ? "product" : "products"
+          } selected`}</span>
+        )}
+
+        <div>
+          <Button
+            variant="outlined"
+            onClick={handleClose}
+            sx={cancelButtonStyle}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => {
+              handleAdd(mappedData);
+            }}
+            sx={addButtonStyle}
+          >
+            Add
+          </Button>
+        </div>
       </div>
     </React.Fragment>
   );
