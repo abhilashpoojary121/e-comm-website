@@ -8,17 +8,47 @@ export const ProductsProvider = ({ children }) => {
   const [index, setIndex] = useState(0);
 
   const updateProducts = (updatedData) => {
-    const updateProductData = productsData.map((item, indexFromData) => {
-      if (indexFromData === index) {
-        return { ...updatedData[0] };
+    const checkedData = updatedData.reduce((acc, item) => {
+      if (item.variants) {
+        const filteredVariants = item.variants.filter(
+          (variant) => variant.checkedValue
+        );
+        if (filteredVariants.length > 0) {
+          acc.push({ ...item, variants: filteredVariants });
+        }
+      }
+      return acc;
+    }, []);
+    const productList = [...productsData];
+    const checkedProductList = productList.flatMap((item, productIndex) => {
+      if (productIndex === index) {
+        return checkedData;
       }
       return item;
     });
-    setProductsData(updateProductData);
+    setProductsData(checkedProductList);
   };
 
   const addProductContainer = () => {
     setProductsData([...productsData, {}]);
+  };
+
+  const deleteProductContainer = (index) => {
+    const updatedProducts = [...productsData];
+    updatedProducts.splice(index, 1);
+    setProductsData(updatedProducts);
+  };
+
+  const deleteVariants = (indexOfProduct, indexOfVariant) => {
+    const updatedProducts = [...productsData];
+    updatedProducts.forEach((item, productIndex) => {
+      if (productIndex === indexOfProduct) {
+        if (item.variants && item.variants.length > 0) {
+          item.variants.splice(indexOfVariant, 1);
+        }
+      }
+    });
+    setProductsData(updatedProducts);
   };
 
   const updateIndexOfContainer = (index) => {
@@ -43,6 +73,8 @@ export const ProductsProvider = ({ children }) => {
         productsData,
         updateProducts,
         addProductContainer,
+        deleteProductContainer,
+        deleteVariants,
         updateIndexOfContainer,
         updateDndProducts,
         updateVariantsDnd,

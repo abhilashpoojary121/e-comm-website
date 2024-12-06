@@ -28,7 +28,7 @@ const Product = (props) => {
     discountInput,
     handleDiscountInput,
   } = props;
-
+  const { deleteProductContainer, deleteVariants } = useProductsContext();
   return (
     <React.Fragment>
       <div className="parent-grid-container">
@@ -111,9 +111,15 @@ const Product = (props) => {
           </Button>
         )}
 
-        <img id="closeIcon" src={closeIcon} width="11.67px" height="11.67px" />
+        <img
+          id="closeIcon"
+          src={closeIcon}
+          width="11.67px"
+          height="11.67px"
+          onClick={() => deleteProductContainer(index)}
+        />
         <div
-          id={variants ? "show-variant" : "hide-variant"}
+          id={variants && variants.length > 0 ? "show-variant" : "hide-variant"}
           className="variants-container"
         >
           <div
@@ -186,6 +192,9 @@ const Product = (props) => {
                             src={closeIcon}
                             width="11.67px"
                             height="11.67px"
+                            onClick={() =>
+                              deleteVariants(index, indexOfVariants)
+                            }
                           />
                         </div>
                       </div>

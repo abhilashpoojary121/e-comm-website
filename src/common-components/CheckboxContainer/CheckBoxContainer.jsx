@@ -64,7 +64,7 @@ const CheckboxContainer = (props) => {
               checkedValue: false,
               variants: item.variants.map((variant) => ({
                 ...variant,
-                checkedValue: false, // Sync all child checkboxes
+                checkedValue: false,
               })),
             };
           }
@@ -80,7 +80,7 @@ const CheckboxContainer = (props) => {
               checkedValue: newCheckedValue,
               variants: item.variants.map((variant) => ({
                 ...variant,
-                checkedValue: newCheckedValue, // Sync all child checkboxes
+                checkedValue: newCheckedValue,
               })),
             };
           }
@@ -129,7 +129,13 @@ const CheckboxContainer = (props) => {
           ) : (
             mappedData.map((item) => {
               return (
-                <div key={v4()} id="checkbox-container">
+                <div
+                  key={v4()}
+                  id="checkbox-container"
+                  className={
+                    item?.variants.length > 7 ? "show-scroll" : "no-scroll"
+                  }
+                >
                   <hr />
                   <div id="parent-checkbox-container">
                     <FormControlLabel

@@ -6,6 +6,7 @@ import Modal from "@mui/material/Modal";
 import CheckboxContainer from "../../common-components/CheckboxContainer/CheckBoxContainer";
 import "./index.css";
 import searchIcon from "../../assets/media/searchIcon.svg";
+import closeModal from "../../assets/media/closeModal.svg";
 const style = {
   position: "absolute",
   top: "50%",
@@ -18,11 +19,12 @@ const style = {
   borderRadius: "4px",
   h3: {
     fontWeight: "500",
-    padding: "20px 5px 5px 30px",
+    padding: "20px 5px 20px 30px",
     margin: "0",
   },
   hr: {
     border: "1px solid #0000001A",
+    margin: 0,
   },
 };
 
@@ -72,8 +74,12 @@ const ProductPicker = (props) => {
     setIsLoading(false);
   };
   const handleAdd = (mappedData) => {
-    updateProducts(mappedData);
-    setOpen(false);
+    if (mappedData && mappedData.length > 0) {
+      updateProducts(mappedData);
+      setOpen(false);
+    } else {
+      alert("Please select a product");
+    }
   };
   const handleInputChange = (e) => {
     setSearchValue(e.target.value);
@@ -88,7 +94,23 @@ const ProductPicker = (props) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <h3>Search Product</h3>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              paddingRight: "20px",
+            }}
+          >
+            <h3>Search Product</h3>
+            <img
+              src={closeModal}
+              style={{ width: "17px", height: "17px", cursor: "pointer" }}
+              onClick={() => {
+                handleClose();
+              }}
+            />
+          </Box>
           <hr />
           <div id="searchBar">
             <img src={searchIcon} />
@@ -107,13 +129,6 @@ const ProductPicker = (props) => {
             handleClose={handleClose}
             isLoading={isLoading}
           />
-          {/* {isLoading ? (
-            <CheckboxContainer responseData={responseData} />
-          ) : (
-            <Box sx={{ display: "flex" }}>
-              <CircularProgress />
-            </Box>
-          )} */}
         </Box>
       </Modal>
     </React.Fragment>

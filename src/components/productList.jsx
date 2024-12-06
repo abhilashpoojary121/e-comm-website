@@ -34,19 +34,19 @@ const ProductList = () => {
   const handleToggleVariant = (index) => {
     setToggleVariantButton((prevState) => ({
       ...prevState,
-      [index]: !prevState[index], 
+      [index]: !prevState[index],
     }));
   };
   const handleSelectInput = (index, value) => {
     setSelectInput((prevState) => ({
       ...prevState,
-      [index]: value, 
+      [index]: value,
     }));
   };
   const handleDiscountInput = (index, value) => {
     setDiscountInput((prevState) => ({
       ...prevState,
-      [index]: value, 
+      [index]: value,
     }));
   };
   const handleDrag = (results) => {
@@ -61,9 +61,9 @@ const ProductList = () => {
     //Reordering for the psrentgroup
     if (type === "parentGroup") {
       const reorderedList = [...productsData];
-      const [removedItem] = reorderedList.splice(source.index, 1); 
-      reorderedList.splice(destination.index, 0, removedItem); 
-      updateDndProducts(reorderedList); 
+      const [removedItem] = reorderedList.splice(source.index, 1);
+      reorderedList.splice(destination.index, 0, removedItem);
+      updateDndProducts(reorderedList);
     }
     // Reordering for the variants
     if (type === "variantGroup") {
@@ -76,8 +76,8 @@ const ProductList = () => {
       const updatedProductsData = [...productsData];
       const product = updatedProductsData[productIndex];
 
-      const reorderedVariants = [...product.variants]; 
-      const [removedVariant] = reorderedVariants.splice(variantIndex, 1); 
+      const reorderedVariants = [...product.variants];
+      const [removedVariant] = reorderedVariants.splice(variantIndex, 1);
       reorderedVariants.splice(variantDestinationIndex, 0, removedVariant);
       product.variants = reorderedVariants;
       updatedProductsData[productIndex] = product;

@@ -1,7 +1,8 @@
 #parent-checkbox-container {
   display: flex;
-  margin-left: 20px;
+  /* margin-left: 20px; */
   flex-direction: row;
+  padding: 10px 0px 10px 20px;
   img {
     width: 36px;
     height: 36px;
@@ -12,12 +13,10 @@
 
 #child-checkbox-container {
   display: flex;
-  margin-left: 60px;
   flex-direction: row;
-  padding-right: 30px;
+  padding: 10px 30px 10px 60px;
   justify-content: space-between;
 }
-
 #item-info {
   span:first-child {
     padding-right: 40px;
@@ -27,4 +26,28 @@
 #loader-container {
   padding: 40px;
   text-align: center;
+}
+#checkbox-container {
+  hr {
+    margin: 0;
+  }
+}
+.show-scroll {
+  max-height: 420px;
+  overflow-y: scroll;
+}
+.show-scroll::-webkit-scrollbar {
+  width: 6px;
+  border-radius: 1px;
+}
+.show-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.show-scroll::-webkit-scrollbar-thumb {
+  background: #6d7175;
+}
+
+.show-scroll::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
