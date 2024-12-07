@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { v4 } from "uuid";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { useProductsContext } from "../../context/ProductsContext";
 import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
@@ -25,7 +26,14 @@ const addButtonStyle = {
   height: "32px",
 };
 const CheckboxContainer = (props) => {
-  const { responseData, handleAdd, handleClose, isLoading } = props;
+  const {
+    responseData,
+    handleAdd,
+    handleClose,
+    isLoading,
+    fetchNewData,
+    hasMoreData,
+  } = props;
   const [mappedData, setMappedData] = useState([]);
 
   //calculate total products to handle scroll +1 for parent
@@ -113,7 +121,7 @@ const CheckboxContainer = (props) => {
 
   return (
     <React.Fragment>
-      <div className={totalProducts > 7 ? "show-scroll" : "no-scroll"}>
+      <div>
         {isLoading ? (
           <div id="loader-container">
             <CircularProgress />
@@ -123,59 +131,34 @@ const CheckboxContainer = (props) => {
             {mappedData?.length === 0 ? (
               <React.Fragment></React.Fragment>
             ) : (
-              mappedData.map((item) => {
-                return (
-                  <div key={v4()} id="checkbox-container">
-                    <hr />
-                    <div id="parent-checkbox-container">
-                      <FormControlLabel
-                        id="parent-checkbox"
-                        label={item.title}
-                        control={
-                          <React.Fragment>
-                            <Checkbox
-                              checked={allChildrenChecked(item.id)}
-                              indeterminate={
-                                someChildrenChecked(item.id) &&
-                                !allChildrenChecked(item.id)
-                              }
-                              onChange={(e) => handleParentChange(e, item.id)}
-                              sx={{
-                                width: "24px",
-                                height: "24px",
-                                padding: "6px 4.8px 6px 4.8px",
-                                borderRadius: "4px",
-                                color: "#008060",
-                                "&.Mui-checked": {
-                                  color: "#008060",
-                                },
-                                "&.MuiCheckbox-indeterminate": {
-                                  color: "#008060",
-                                },
-                              }}
-                            />
-                            <img src={item.imageSrc} />
-                          </React.Fragment>
-                        }
-                      />
-                    </div>
-                    {item.variants.map((element) => (
-                      <div key={v4()}>
-                        <hr />
-                        <div id="child-checkbox-container">
-                          <FormControlLabel
-                            key={element.id}
-                            label={element.title}
-                            control={
+              <InfiniteScroll
+                dataLength={responseData.length}
+                next={fetchNewData}
+                height={400}
+                hasMore={hasMoreData}
+                loader={<h4>Loading...</h4>}
+              >
+                {mappedData.map((item) => {
+                  return (
+                    <div key={v4()} id="checkbox-container">
+                      <hr />
+                      <div id="parent-checkbox-container">
+                        <FormControlLabel
+                          id="parent-checkbox"
+                          label={item.title}
+                          control={
+                            <React.Fragment>
                               <Checkbox
-                                checked={element.checkedValue}
-                                onChange={() =>
-                                  handleChildCheckbox(item.id, element.id)
+                                checked={allChildrenChecked(item.id)}
+                                indeterminate={
+                                  someChildrenChecked(item.id) &&
+                                  !allChildrenChecked(item.id)
                                 }
+                                onChange={(e) => handleParentChange(e, item.id)}
                                 sx={{
                                   width: "24px",
                                   height: "24px",
-                                  marginRight: "10px",
+                                  padding: "6px 4.8px 6px 4.8px",
                                   borderRadius: "4px",
                                   color: "#008060",
                                   "&.Mui-checked": {
@@ -186,18 +169,51 @@ const CheckboxContainer = (props) => {
                                   },
                                 }}
                               />
-                            }
-                          />
-                          <div id="item-info">
-                            <span>{`${element.inventory_quantity} available`}</span>
-                            <span>{`₹${element.price}`}</span>
+                              <img src={item.imageSrc} />
+                            </React.Fragment>
+                          }
+                        />
+                      </div>
+                      {item.variants.map((element) => (
+                        <div key={v4()}>
+                          <hr />
+                          <div id="child-checkbox-container">
+                            <FormControlLabel
+                              key={element.id}
+                              label={element.title}
+                              control={
+                                <Checkbox
+                                  checked={element.checkedValue}
+                                  onChange={() =>
+                                    handleChildCheckbox(item.id, element.id)
+                                  }
+                                  sx={{
+                                    width: "24px",
+                                    height: "24px",
+                                    marginRight: "10px",
+                                    borderRadius: "4px",
+                                    color: "#008060",
+                                    "&.Mui-checked": {
+                                      color: "#008060",
+                                    },
+                                    "&.MuiCheckbox-indeterminate": {
+                                      color: "#008060",
+                                    },
+                                  }}
+                                />
+                              }
+                            />
+                            <div id="item-info">
+                              <span>{`${element.inventory_quantity} available`}</span>
+                              <span>{`₹${element.price}`}</span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                );
-              })
+                      ))}
+                    </div>
+                  );
+                })}
+              </InfiniteScroll>
             )}
           </React.Fragment>
         )}

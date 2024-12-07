@@ -34,6 +34,11 @@ const ProductPicker = (props) => {
   const [searchValue, setSearchValue] = useState("");
   const [responseData, setResponseData] = useState([]);
   const { productsData, updateProducts } = useProductsContext();
+  //infiniteScroll
+  const [page, setPage] = useState(1);
+  const [scrollLoading, setScrollLoading] = useState(false);
+  const [hasMoreData, setHasMoreData] = useState(true);
+
   useEffect(() => {
     const getData = setTimeout(() => {
       if (searchValue) {
@@ -44,6 +49,38 @@ const ProductPicker = (props) => {
     return () => clearTimeout(getData);
   }, [searchValue]);
 
+  //infinitescroll
+  const fetchNewData = async () => {
+    setPage((prevState) => prevState + 1);
+    setScrollLoading(true);
+    try {
+      const response = await fetch(
+        `http://stageapi.monkcommerce.app/task/products/search?search=${searchValue}&page=${page}&limit=10`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": "72njgfa948d9aS7gs5",
+          },
+        }
+      );
+
+      // Parse the response body as JSON
+      const result = await response.json();
+      if (result && result.length > 0) {
+        setResponseData((prev) => [...prev, ...result]);
+      } else {
+        setHasMoreData(false);
+      }
+    } catch (err) {
+      console.log("error", err);
+      setScrollLoading(false);
+    } finally {
+      setScrollLoading(false);
+    }
+    setScrollLoading(false);
+  };
+
   const getSearchedProducts = async () => {
     setIsLoading(true);
     const headers = {
@@ -52,7 +89,7 @@ const ProductPicker = (props) => {
     };
     try {
       const response = await fetch(
-        `http://stageapi.monkcommerce.app/task/products/search?search=${searchValue}&page=0&limit=1`,
+        `http://stageapi.monkcommerce.app/task/products/search?search=${searchValue}&page=${page}&limit=10`,
         {
           method: "GET",
           headers: headers,
@@ -65,6 +102,7 @@ const ProductPicker = (props) => {
       // Parse the response body as JSON
       const result = await response.json();
       setResponseData(result);
+      setPage((prevState) => prevState + 1);
     } catch (err) {
       console.log("error", err);
       setIsLoading(false);
@@ -122,12 +160,14 @@ const ProductPicker = (props) => {
               style={{ width: "90%" }}
             />
           </div>
-          
+
           <CheckboxContainer
             responseData={responseData}
             handleAdd={handleAdd}
             handleClose={handleClose}
             isLoading={isLoading}
+            fetchNewData={fetchNewData}
+            hasMoreData={hasMoreData}
           />
         </Box>
       </Modal>
