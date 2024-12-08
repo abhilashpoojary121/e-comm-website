@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useProductsContext } from "../../context/ProductsContext";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import CheckboxContainer from "../../common-components/CheckboxContainer/CheckBoxContainer";
+import CheckboxContainer from "../CheckboxContainer/CheckBoxContainer";
 import "./index.css";
 import searchIcon from "../../assets/media/searchIcon.svg";
 import closeModal from "../../assets/media/closeModal.svg";
@@ -29,14 +28,13 @@ const style = {
 };
 
 const ProductPicker = (props) => {
-  const { handleClose, open, setOpen, index } = props;
+  const { handleClose, open, setOpen } = props;
   const [isLoading, setIsLoading] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [responseData, setResponseData] = useState([]);
-  const { productsData, updateProducts } = useProductsContext();
+  const { updateProducts } = useProductsContext();
   //infiniteScroll
   const [page, setPage] = useState(1);
-  const [scrollLoading, setScrollLoading] = useState(false);
   const [hasMoreData, setHasMoreData] = useState(true);
 
   useEffect(() => {
@@ -49,10 +47,13 @@ const ProductPicker = (props) => {
     return () => clearTimeout(getData);
   }, [searchValue]);
 
+  useEffect(() => {
+    setPage(1);
+  }, [searchValue]);
+
   //infinitescroll
   const fetchNewData = async () => {
     setPage((prevState) => prevState + 1);
-    setScrollLoading(true);
     try {
       const response = await fetch(
         `http://stageapi.monkcommerce.app/task/products/search?search=${searchValue}&page=${page}&limit=10`,
@@ -74,11 +75,7 @@ const ProductPicker = (props) => {
       }
     } catch (err) {
       console.log("error", err);
-      setScrollLoading(false);
-    } finally {
-      setScrollLoading(false);
     }
-    setScrollLoading(false);
   };
 
   const getSearchedProducts = async () => {
@@ -98,8 +95,6 @@ const ProductPicker = (props) => {
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
       }
-
-      // Parse the response body as JSON
       const result = await response.json();
       setResponseData(result);
       setPage((prevState) => prevState + 1);
@@ -145,6 +140,7 @@ const ProductPicker = (props) => {
               src={closeModal}
               style={{ width: "17px", height: "17px", cursor: "pointer" }}
               onClick={() => {
+                setSearchValue("");
                 handleClose();
               }}
             />
@@ -158,13 +154,14 @@ const ProductPicker = (props) => {
               value={searchValue}
               onChange={handleInputChange}
               style={{ width: "90%" }}
+              autoFocus="autofocus"
             />
           </div>
-
           <CheckboxContainer
             responseData={responseData}
             handleAdd={handleAdd}
             handleClose={handleClose}
+            setSearchValue={setSearchValue}
             isLoading={isLoading}
             fetchNewData={fetchNewData}
             hasMoreData={hasMoreData}

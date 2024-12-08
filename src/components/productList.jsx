@@ -1,54 +1,18 @@
-import React, { useState, useEffect, createContext, useContext } from "react";
-import { v4 } from "uuid";
+import React, { useState } from "react";
 import { useProductsContext } from "../context/ProductsContext";
 import Button from "@mui/material/Button";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import Input from "../common-components/Input/Input";
-import dragdots from "../assets/media/dragdots.svg";
 import Product from "./Product/Product";
 import ProductPicker from "./ProductPicker/ProductPicker";
 import "./style.css";
 
 const ProductList = () => {
-  const [open, setOpen] = React.useState(false);
-  const {
-    productsData,
-    updateProducts,
-    addProductContainer,
-    updateDndProducts,
-    updateVariantsDnd,
-  } = useProductsContext();
+  const [open, setOpen] = useState(false);
+  const { productsData, index, addProductContainer, updateDndProducts } =
+    useProductsContext();
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [discountState, setDiscountState] = useState({});
-  const [toggleVariantButton, setToggleVariantButton] = useState({});
-  const [selectInput, setSelectInput] = useState({});
-  const [discountInput, setDiscountInput] = useState({});
 
-  const handleToggleDiscountButton = (index) => {
-    setDiscountState((prevState) => ({
-      ...prevState,
-      [index]: !prevState[index],
-    }));
-  };
-  const handleToggleVariant = (index) => {
-    setToggleVariantButton((prevState) => ({
-      ...prevState,
-      [index]: !prevState[index],
-    }));
-  };
-  const handleSelectInput = (index, value) => {
-    setSelectInput((prevState) => ({
-      ...prevState,
-      [index]: value,
-    }));
-  };
-  const handleDiscountInput = (index, value) => {
-    setDiscountInput((prevState) => ({
-      ...prevState,
-      [index]: value,
-    }));
-  };
   const handleDrag = (results) => {
     const { source, destination, type } = results;
     if (!destination) return;
@@ -96,7 +60,7 @@ const ProductList = () => {
               <div {...provided.droppableProps} ref={provided.innerRef}>
                 {productsData.map((item, index) => {
                   return (
-                    <div key={v4()} style={{ width: "fit-content" }}>
+                    <div key={index} style={{ width: "fit-content" }}>
                       <Draggable
                         draggableId={`dragid-${index}`}
                         key={`dragkey-${index}`}
@@ -114,30 +78,10 @@ const ProductList = () => {
                               value={item.title}
                               variants={item.variants}
                               handleOpen={handleOpen}
-                              handleToggleDiscountButton={
-                                handleToggleDiscountButton
-                              }
-                              handleToggleVariant={handleToggleVariant}
-                              toggleDiscountButton={
-                                discountState[index] || false
-                              }
-                              toggleVariantButton={
-                                toggleVariantButton[index] || false
-                              }
-                              selectInput={selectInput[index] || ""}
-                              handleSelectInput={handleSelectInput}
-                              discountInput={discountInput[index] || "0"}
-                              handleDiscountInput={handleDiscountInput}
                             />
                           </div>
                         )}
                       </Draggable>
-                      <ProductPicker
-                        open={open}
-                        setOpen={setOpen}
-                        handleClose={handleClose}
-                        index={index}
-                      />
                     </div>
                   );
                 })}
@@ -152,6 +96,12 @@ const ProductList = () => {
           Add Product
         </Button>
       </div>
+      <ProductPicker
+        open={open}
+        setOpen={setOpen}
+        handleClose={handleClose}
+        index={index}
+      />
     </div>
   );
 };

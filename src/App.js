@@ -34,6 +34,9 @@ const theme = createTheme({
       },
     },
   },
+  typography: {
+    fontFamily: "SF Pro Text",
+  },
 });
 function App() {
   return (

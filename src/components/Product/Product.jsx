@@ -1,5 +1,4 @@
-import React, { useContext, useState } from "react";
-import { v4 } from "uuid";
+import React from "react";
 import { useProductsContext } from "../../context/ProductsContext";
 import Button from "@mui/material/Button";
 import Select from "@mui/material/Select";
@@ -12,23 +11,28 @@ import downArrow from "../../assets/media/downArrow.svg";
 import { ReactComponent as SelectChevronIcon } from "../../assets/media/chevron-down_minor.svg";
 import upArrow from "../../assets/media/upArrow.svg";
 import { Draggable, Droppable } from "react-beautiful-dnd";
+import "./index.css";
 const Product = (props) => {
+  const { index, variants, handleOpen, value } = props;
   const {
-    index,
-    title,
-    variants,
-    handleOpen,
-    value,
-    handleToggleDiscountButton,
-    toggleDiscountButton,
-    handleToggleVariant,
-    toggleVariantButton,
-    selectInput,
+    deleteProductContainer,
+    deleteVariants,
+    handleAddDiscountState,
+    getDiscountState,
+    handleAddDiscountInput,
+    getInputValue,
+    handleToggleVariantButton,
+    getToggleVariantButton,
+    handleDiscountParent,
+    getToggleParentButtonState,
+    handleParentInput,
+    parentInputValue,
+    handleParentSelectInput,
+    parentSelectInputValue,
     handleSelectInput,
-    discountInput,
-    handleDiscountInput,
-  } = props;
-  const { deleteProductContainer, deleteVariants } = useProductsContext();
+    variantSelectValue,
+  } = useProductsContext();
+
   return (
     <React.Fragment>
       <div className="parent-grid-container">
@@ -36,19 +40,19 @@ const Product = (props) => {
         <span>{`${index + 1}.`}</span>
         <Input
           handleOpen={handleOpen}
-          value={value}
+          value={value || ""}
           index={index}
           hideButton={false}
         />
-        {toggleDiscountButton ? (
+        {getToggleParentButtonState(index) ? (
           <div id="discount-fields">
             <input
               className="discountInput"
               type="text"
-              value={discountInput}
+              value={parentInputValue(index) || ""}
               placeholder=""
               onChange={(event) => {
-                handleDiscountInput(index, event.target.value);
+                handleParentInput(index, event.target.value);
               }}
             ></input>
             <FormControl
@@ -60,10 +64,10 @@ const Product = (props) => {
               }}
             >
               <Select
-                value={selectInput}
+                value={parentSelectInputValue(index) || ""}
                 IconComponent={SelectChevronIcon}
                 onChange={(event) => {
-                  handleSelectInput(index, event.target.value);
+                  handleParentSelectInput(index, event.target.value);
                 }}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
@@ -104,7 +108,7 @@ const Product = (props) => {
             id="disocunt-btn"
             variant="contained"
             onClick={() => {
-              handleToggleDiscountButton(index);
+              handleDiscountParent(index);
             }}
           >
             Add Discount
@@ -125,10 +129,10 @@ const Product = (props) => {
           <div
             id="variant-button"
             onClick={() => {
-              handleToggleVariant(index);
+              handleToggleVariantButton(index);
             }}
           >
-            {toggleVariantButton ? (
+            {getToggleVariantButton(index) ? (
               <React.Fragment>
                 <span>Hide variant</span>
                 <img src={upArrow} width="11px" height="21px" />
@@ -142,9 +146,9 @@ const Product = (props) => {
           </div>
         </div>
       </div>
-      {variants && toggleVariantButton ? (
+      {variants && getToggleVariantButton(index) ? (
         variants.map((element, indexOfVariants) => (
-          <div key={v4()}>
+          <div key={indexOfVariants}>
             <Droppable
               droppableId={`variant-${index}-${indexOfVariants}`}
               type="variantGroup"
@@ -174,19 +178,101 @@ const Product = (props) => {
                           <span>{`${indexOfVariants + 1}.`}</span>
                           <Input
                             handleOpen={handleOpen}
-                            value={element.title}
+                            value={element.title || ""}
                             index={index}
                             hideButton={true}
                           />
-                          <Button
-                            id="disocunt-btn"
-                            variant="contained"
-                            onClick={() => {
-                              handleToggleDiscountButton(index);
-                            }}
-                          >
-                            Add Discount
-                          </Button>
+                          {getDiscountState(index, indexOfVariants) ? (
+                            <div id="discount-fields">
+                              <input
+                                className="variantDiscountInput"
+                                type="text"
+                                value={
+                                  getInputValue(index, indexOfVariants) || ""
+                                }
+                                placeholder=""
+                                onChange={(event) => {
+                                  handleAddDiscountInput(
+                                    index,
+                                    indexOfVariants,
+                                    event.target.value
+                                  );
+                                }}
+                              ></input>
+                              <FormControl
+                                sx={{
+                                  width: "95px",
+                                  height: "33.6px",
+                                  marginLeft: "5px",
+                                  paddingTop: 0,
+                                  borderRadius: "30px",
+                                }}
+                              >
+                                <Select
+                                  value={
+                                    variantSelectValue(
+                                      index,
+                                      indexOfVariants
+                                    ) || ""
+                                  }
+                                  IconComponent={SelectChevronIcon}
+                                  onChange={(event) => {
+                                    handleSelectInput(
+                                      index,
+                                      indexOfVariants,
+                                      event.target.value
+                                    );
+                                  }}
+                                  displayEmpty
+                                  inputProps={{ "aria-label": "Without label" }}
+                                  sx={{
+                                    ".MuiOutlinedInput-notchedOutline": {
+                                      borderColor: "#00000012",
+                                      borderRadius: "30px",
+                                    },
+                                    "&.Mui-focused .MuiOutlinedInput-notchedOutline":
+                                      {
+                                        borderColor: "#008060",
+                                        borderRadius: "30px",
+                                      },
+                                    "&:hover .MuiOutlinedInput-notchedOutline":
+                                      {
+                                        borderColor: "#00000012",
+                                        borderRadius: "30px",
+                                      },
+                                    "& .MuiSelect-select": {
+                                      fontFamily: "SF Pro Text Light",
+                                      fontSize: "14px",
+                                      paddingRight: 4,
+                                      paddingLeft: 2,
+                                      paddingTop: "5px",
+                                      paddingBottom: "5px",
+                                      boxShadow: " 0px 2px 4px 0px #0000001a",
+                                      borderRadius: "0px",
+                                      alignContent: "center",
+                                      borderRadius: "30px",
+                                    },
+                                    "& .MuiSelect-icon": {
+                                      top: "20%",
+                                    },
+                                  }}
+                                >
+                                  <MenuItem value={""}>% Off</MenuItem>
+                                  <MenuItem value={"flat"}>flat off</MenuItem>
+                                </Select>
+                              </FormControl>
+                            </div>
+                          ) : (
+                            <Button
+                              id="disocunt-btn"
+                              variant="contained"
+                              onClick={() => {
+                                handleAddDiscountState(index, indexOfVariants);
+                              }}
+                            >
+                              Add Discount
+                            </Button>
+                          )}
                           <img
                             id="closeIcon"
                             src={closeIcon}

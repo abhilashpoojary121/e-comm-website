@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { v4 } from "uuid";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useProductsContext } from "../../context/ProductsContext";
-import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
-import checkIcon from "../../assets/media/checkIcon.svg";
-import uncheckedIcon from "../../assets/media/uncheckedIcon.svg";
 import "./index.css";
 const cancelButtonStyle = {
+  fontFamily: "SF Pro Text Medium",
   width: "104px",
   height: "32px",
   fontSize: "14px",
@@ -22,25 +18,47 @@ const cancelButtonStyle = {
   },
 };
 const addButtonStyle = {
+  fontFamily: "SF Pro Text Medium",
   width: "72px",
   height: "32px",
+};
+const parentCheckboxContainer = {
+  width: "24px",
+  height: "24px",
+  padding: "6px 4.8px 6px 4.8px",
+  borderRadius: "4px",
+  color: "#008060",
+  "&.Mui-checked": {
+    color: "#008060",
+  },
+  "&.MuiCheckbox-indeterminate": {
+    color: "#008060",
+  },
+};
+const childCheckboxContainer = {
+  width: "24px",
+  height: "24px",
+  marginRight: "10px",
+  borderRadius: "4px",
+  color: "#008060",
+  "&.Mui-checked": {
+    color: "#008060",
+  },
+  "&.MuiCheckbox-indeterminate": {
+    color: "#008060",
+  },
 };
 const CheckboxContainer = (props) => {
   const {
     responseData,
     handleAdd,
     handleClose,
+    setSearchValue,
     isLoading,
     fetchNewData,
     hasMoreData,
   } = props;
   const [mappedData, setMappedData] = useState([]);
-
-  //calculate total products to handle scroll +1 for parent
-  const totalProducts = mappedData.reduce(
-    (acc, item) => acc + item.variants.length + 1,
-    0
-  );
 
   const parentProductsChecked = mappedData.filter((product) =>
     product.variants.some((variant) => variant.checkedValue)
@@ -49,12 +67,16 @@ const CheckboxContainer = (props) => {
   //checkbox functions
   useEffect(() => {
     setMappedData(
-      responseData?.length === 0 || !responseData
+      responseData == null || !responseData
         ? []
         : responseData.map((item) => ({
             id: item.id,
             title: item.title,
+            inputValue: "",
+            selectValue: "",
             checkedValue: false,
+            discountAdded: false,
+            toggleVariantButton: false,
             imageSrc: item.image.src,
             variants:
               item.variants.length === 0
@@ -65,6 +87,9 @@ const CheckboxContainer = (props) => {
                     price: variant.price,
                     inventory_quantity: variant.inventory_quantity,
                     checkedValue: false,
+                    discountAdded: false,
+                    inputValue: "",
+                    selectValue: "",
                   })),
           }))
     );
@@ -132,15 +157,23 @@ const CheckboxContainer = (props) => {
               <React.Fragment></React.Fragment>
             ) : (
               <InfiniteScroll
-                dataLength={responseData.length}
+                dataLength={
+                  responseData == null || !responseData
+                    ? 0
+                    : responseData.length
+                }
                 next={fetchNewData}
                 height={400}
                 hasMore={hasMoreData}
-                loader={<h4>Loading...</h4>}
+                loader={
+                  <div style={{ textAlign: "center" }}>
+                    <CircularProgress />
+                  </div>
+                }
               >
-                {mappedData.map((item) => {
+                {mappedData.map((item, index) => {
                   return (
-                    <div key={v4()} id="checkbox-container">
+                    <div key={index} id="checkbox-container">
                       <hr />
                       <div id="parent-checkbox-container">
                         <FormControlLabel
@@ -155,51 +188,28 @@ const CheckboxContainer = (props) => {
                                   !allChildrenChecked(item.id)
                                 }
                                 onChange={(e) => handleParentChange(e, item.id)}
-                                sx={{
-                                  width: "24px",
-                                  height: "24px",
-                                  padding: "6px 4.8px 6px 4.8px",
-                                  borderRadius: "4px",
-                                  color: "#008060",
-                                  "&.Mui-checked": {
-                                    color: "#008060",
-                                  },
-                                  "&.MuiCheckbox-indeterminate": {
-                                    color: "#008060",
-                                  },
-                                }}
+                                sx={parentCheckboxContainer}
                               />
                               <img src={item.imageSrc} />
                             </React.Fragment>
                           }
                         />
                       </div>
-                      {item.variants.map((element) => (
-                        <div key={v4()}>
+                      {item.variants.map((element, variantIndex) => (
+                        <div key={variantIndex}>
                           <hr />
                           <div id="child-checkbox-container">
                             <FormControlLabel
                               key={element.id}
                               label={element.title}
+                              sx={{ fontFamily: "SF Pro Text" }}
                               control={
                                 <Checkbox
                                   checked={element.checkedValue}
                                   onChange={() =>
                                     handleChildCheckbox(item.id, element.id)
                                   }
-                                  sx={{
-                                    width: "24px",
-                                    height: "24px",
-                                    marginRight: "10px",
-                                    borderRadius: "4px",
-                                    color: "#008060",
-                                    "&.Mui-checked": {
-                                      color: "#008060",
-                                    },
-                                    "&.MuiCheckbox-indeterminate": {
-                                      color: "#008060",
-                                    },
-                                  }}
+                                  sx={childCheckboxContainer}
                                 />
                               }
                             />
@@ -231,7 +241,10 @@ const CheckboxContainer = (props) => {
         <div>
           <Button
             variant="outlined"
-            onClick={handleClose}
+            onClick={() => {
+              setSearchValue("");
+              handleClose();
+            }}
             sx={cancelButtonStyle}
           >
             Cancel
@@ -239,6 +252,7 @@ const CheckboxContainer = (props) => {
           <Button
             variant="contained"
             onClick={() => {
+              setSearchValue("");
               handleAdd(mappedData);
             }}
             sx={addButtonStyle}
