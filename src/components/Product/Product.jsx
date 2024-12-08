@@ -261,7 +261,6 @@ const Product = (props) => {
                                       paddingTop: "5px",
                                       paddingBottom: "5px",
                                       boxShadow: " 0px 2px 4px 0px #0000001a",
-                                      borderRadius: "0px",
                                       alignContent: "center",
                                       borderRadius: "30px",
                                     },
