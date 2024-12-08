@@ -44,7 +44,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <ProductsProvider>
           <div id="header-container">
-            <img src={monkheader} width="30.97px" height="30.97px"></img>
+            <img src={monkheader} width="30.97px" height="30.97px" alt="company-header-logo"></img>
             <h3>Monk Upsell & Cross-sell</h3>
             <hr />
           </div>

@@ -136,6 +136,7 @@ const ProductPicker = (props) => {
             <h3>Search Product</h3>
             <img
               src={closeModal}
+              alt="close-button"
               style={{ width: "17px", height: "17px", cursor: "pointer" }}
               onClick={() => {
                 setSearchValue("");
@@ -145,7 +146,7 @@ const ProductPicker = (props) => {
           </Box>
           <hr />
           <div id="searchBar">
-            <img src={searchIcon} />
+            <img src={searchIcon} alt="seacrh-icon" />
             <input
               type="text"
               placeholder="Search product"

@@ -36,7 +36,13 @@ const Product = (props) => {
   return (
     <React.Fragment>
       <div className="parent-grid-container">
-        <img id="dragdots" src={dragdots} width="7px" height="14px" />
+        <img
+          id="dragdots"
+          src={dragdots}
+          alt="drag-and-drop-icon"
+          width="7px"
+          height="14px"
+        />
         <span>{`${index + 1}.`}</span>
         <Input
           handleOpen={handleOpen}
@@ -118,6 +124,7 @@ const Product = (props) => {
         <img
           id="closeIcon"
           src={closeIcon}
+          alt="delete-button"
           width="11.67px"
           height="11.67px"
           onClick={() => deleteProductContainer(index)}
@@ -135,12 +142,17 @@ const Product = (props) => {
             {getToggleVariantButton(index) ? (
               <React.Fragment>
                 <span>Hide variant</span>
-                <img src={upArrow} width="11px" height="21px" />
+                <img src={upArrow} alt="up-arrow" width="11px" height="21px" />
               </React.Fragment>
             ) : (
               <React.Fragment>
                 <span>Show variant</span>
-                <img src={downArrow} width="11px" height="21px" />
+                <img
+                  src={downArrow}
+                  alt="down-arrow"
+                  width="11px"
+                  height="21px"
+                />
               </React.Fragment>
             )}
           </div>
@@ -172,6 +184,7 @@ const Product = (props) => {
                           <img
                             id="dragdots"
                             src={dragdots}
+                            alt="drag-and-drop-icon"
                             width="7px"
                             height="14px"
                           />
@@ -276,6 +289,7 @@ const Product = (props) => {
                           <img
                             id="closeIcon"
                             src={closeIcon}
+                            alt="delete-variant-button"
                             width="11.67px"
                             height="11.67px"
                             onClick={() =>

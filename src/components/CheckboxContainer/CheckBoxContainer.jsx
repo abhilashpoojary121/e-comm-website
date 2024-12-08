@@ -191,7 +191,7 @@ const CheckboxContainer = (props) => {
                                 onChange={(e) => handleParentChange(e, item.id)}
                                 sx={parentCheckboxContainer}
                               />
-                              <img src={item.imageSrc} />
+                              <img src={item.imageSrc} alt="product-image" />
                             </React.Fragment>
                           }
                         />

@@ -42,6 +42,7 @@ const Input = (props) => {
           <button>
             <img
               src={edit}
+              alt="edit-button"
               width={"15.98px"}
               height={"16px"}
               onClick={() => {
