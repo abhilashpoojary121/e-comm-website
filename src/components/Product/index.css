@@ -28,15 +28,6 @@
     outline: 2px solid #008060;
   }
 }
-#discount-dropdown {
-  width: 95px;
-  height: 33.6px;
-  margin-left: 5px;
-  &:focus-visible {
-    outline: 2px solid #008060;
-  }
-}
-
 #discount-fields {
   margin-left: 20px;
 }

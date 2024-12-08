@@ -2,7 +2,6 @@
   position: absolute;
   width: 64.9%;
   height: 86%;
-  /* height: 1027px; */
   top: 75px;
   left: 253px;
 }
@@ -12,12 +11,6 @@
   align-items: center;
   margin-top: 20px;
 }
-#products-wrapper {
-  display: flex;
-  flex-direction: column;
-  width: 470px;
-}
-
 #button-container {
   width: 450px;
   text-align: end;
@@ -27,14 +20,9 @@
     margin-right: 10px;
   }
 }
-
 #show-variant {
   display: inherit;
 }
 #hide-variant {
   display: none;
-}
-#variants-wrapper {
-  align-self: end;
-  padding-right: 33px;
 }

@@ -33,7 +33,7 @@ const ProductPicker = (props) => {
   const [searchValue, setSearchValue] = useState("");
   const [responseData, setResponseData] = useState([]);
   const { updateProducts } = useProductsContext();
-  //infiniteScroll
+  //states for infiniteScroll component
   const [page, setPage] = useState(1);
   const [hasMoreData, setHasMoreData] = useState(true);
 
@@ -51,7 +51,7 @@ const ProductPicker = (props) => {
     setPage(1);
   }, [searchValue]);
 
-  //infinitescroll
+  //fetching new data for infinitescroll
   const fetchNewData = async () => {
     setPage((prevState) => prevState + 1);
     try {
@@ -61,12 +61,10 @@ const ProductPicker = (props) => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "x-api-key": "72njgfa948d9aS7gs5",
+            "x-api-key": process.env.REACT_APP_MONK_API_KEY,
           },
         }
       );
-
-      // Parse the response body as JSON
       const result = await response.json();
       if (result && result.length > 0) {
         setResponseData((prev) => [...prev, ...result]);
@@ -82,7 +80,7 @@ const ProductPicker = (props) => {
     setIsLoading(true);
     const headers = {
       "Content-Type": "application/json",
-      "x-api-key": "72njgfa948d9aS7gs5",
+      "x-api-key": process.env.REACT_APP_MONK_API_KEY,
     };
     try {
       const response = await fetch(

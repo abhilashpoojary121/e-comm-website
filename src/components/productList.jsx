@@ -7,12 +7,15 @@ import ProductPicker from "./ProductPicker/ProductPicker";
 import "./style.css";
 
 const ProductList = () => {
-  const [open, setOpen] = useState(false);
+  //importing functions and data from context
   const { productsData, index, addProductContainer, updateDndProducts } =
     useProductsContext();
+  //states for modal
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  //handler functions for Drag and Drop functionality
   const handleDrag = (results) => {
     const { source, destination, type } = results;
     if (!destination) return;
@@ -21,7 +24,6 @@ const ProductList = () => {
       source.index === destination.index
     )
       return;
-
     //Reordering for the psrentgroup
     if (type === "parentGroup") {
       const reorderedList = [...productsData];

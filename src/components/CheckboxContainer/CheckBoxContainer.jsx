@@ -64,7 +64,7 @@ const CheckboxContainer = (props) => {
     product.variants.some((variant) => variant.checkedValue)
   ).length;
 
-  //checkbox functions
+  //useeffect to map and load the data in checkboxes
   useEffect(() => {
     setMappedData(
       responseData == null || !responseData
@@ -133,6 +133,7 @@ const CheckboxContainer = (props) => {
     );
   };
 
+  // Check if all child checkboxes are checked for a parent
   const allChildrenChecked = (parentId) => {
     const parentItem = mappedData.find((item) => item.id === parentId);
     return parentItem.variants.every((variant) => variant.checkedValue);
