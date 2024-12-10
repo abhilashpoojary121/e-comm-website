@@ -56,13 +56,14 @@ const ProductPicker = (props) => {
     setPage((prevState) => prevState + 1);
     try {
       const response = await fetch(
-        `http://stageapi.monkcommerce.app/task/products/search?search=${searchValue}&page=${page}&limit=10`,
+        `https://stageapi.monkcommerce.app/task/products/search?search=${searchValue}&page=${page}&limit=10`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
             "x-api-key": process.env.REACT_APP_MONK_API_KEY,
           },
+          redirect: "follow",
         }
       );
       const result = await response.json();
@@ -84,10 +85,11 @@ const ProductPicker = (props) => {
     };
     try {
       const response = await fetch(
-        `http://stageapi.monkcommerce.app/task/products/search?search=${searchValue}&page=${page}&limit=10`,
+        `https://stageapi.monkcommerce.app/task/products/search?search=${searchValue}&page=${page}&limit=10`,
         {
           method: "GET",
           headers: headers,
+          redirect: "follow",
         }
       );
       if (!response.ok) {
