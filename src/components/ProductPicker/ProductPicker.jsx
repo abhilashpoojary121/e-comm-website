@@ -39,6 +39,7 @@ const ProductPicker = (props) => {
 
   useEffect(() => {
     setPage(1);
+    setHasMoreData(true);
     const getData = setTimeout(() => {
       getSearchedProducts();
     }, 1000);
@@ -80,7 +81,7 @@ const ProductPicker = (props) => {
     };
     try {
       const response = await fetch(
-        `https://stageapi.monkcommerce.app/task/products/search?search=${searchValue}&page=${page}&limit=10`,
+        `https://stageapi.monkcommerce.app/task/products/search?search=${searchValue}&page=1&limit=10`,
         {
           method: "GET",
           headers: headers,
@@ -105,8 +106,6 @@ const ProductPicker = (props) => {
     if (mappedData && mappedData.length > 0) {
       updateProducts(mappedData);
       setOpen(false);
-    } else {
-      alert("Please select a product");
     }
   };
   const handleInputChange = (e) => {
@@ -153,6 +152,7 @@ const ProductPicker = (props) => {
               autoFocus="autofocus"
             />
           </div>
+          <hr />
           <CheckboxContainer
             responseData={responseData}
             handleAdd={handleAdd}

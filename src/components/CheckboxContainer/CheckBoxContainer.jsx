@@ -180,7 +180,6 @@ const CheckboxContainer = (props) => {
                 {mappedData.map((item, index) => {
                   return (
                     <div key={index} id="checkbox-container">
-                      <hr />
                       <div id="parent-checkbox-container">
                         <FormControlLabel
                           id="parent-checkbox"
@@ -210,9 +209,9 @@ const CheckboxContainer = (props) => {
                           }
                         />
                       </div>
+                      <hr />
                       {item.variants.map((element, variantIndex) => (
                         <div key={variantIndex}>
-                          <hr />
                           <div id="child-checkbox-container">
                             <FormControlLabel
                               key={element.id}
@@ -233,6 +232,7 @@ const CheckboxContainer = (props) => {
                               <span>{`₹${element.price}`}</span>
                             </div>
                           </div>
+                          <hr />
                         </div>
                       ))}
                     </div>
@@ -245,14 +245,9 @@ const CheckboxContainer = (props) => {
       </div>
       <hr />
       <div id="modal-footer">
-        {parentProductsChecked === 0 ? (
-          <div></div>
-        ) : (
-          <span>{`${parentProductsChecked} ${
-            parentProductsChecked === 1 ? "product" : "products"
-          } selected`}</span>
-        )}
-
+        <span>{`${parentProductsChecked} ${
+          parentProductsChecked === 1 ? "product" : "products"
+        } selected`}</span>
         <div>
           <Button
             variant="outlined"
@@ -267,8 +262,13 @@ const CheckboxContainer = (props) => {
           <Button
             variant="contained"
             onClick={() => {
-              setSearchValue("");
-              handleAdd(mappedData);
+              if (!parentProductsChecked) {
+                alert("Please select a product");
+                return;
+              } else {
+                setSearchValue("");
+                handleAdd(mappedData);
+              }
             }}
             sx={addButtonStyle}
           >
