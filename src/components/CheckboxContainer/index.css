@@ -44,3 +44,22 @@
     gap: 10px;
   }
 }
+
+#product-wrapper {
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 56px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #6d7175;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #3e4042;
+  }
+}

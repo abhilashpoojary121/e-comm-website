@@ -4,6 +4,7 @@ import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
+import placeholder from "../../assets/media/placeholder.png";
 import "./index.css";
 const cancelButtonStyle = {
   fontFamily: "SF Pro Text Medium",
@@ -59,7 +60,11 @@ const CheckboxContainer = (props) => {
     hasMoreData,
   } = props;
   const [mappedData, setMappedData] = useState([]);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+  };
   const parentProductsChecked = mappedData.filter((product) =>
     product.variants.some((variant) => variant.checkedValue)
   ).length;
@@ -147,7 +152,7 @@ const CheckboxContainer = (props) => {
 
   return (
     <React.Fragment>
-      <div>
+      <div id="product-wrapper">
         {isLoading ? (
           <div id="loader-container">
             <CircularProgress />
@@ -191,7 +196,16 @@ const CheckboxContainer = (props) => {
                                 onChange={(e) => handleParentChange(e, item.id)}
                                 sx={parentCheckboxContainer}
                               />
-                              <img src={item.imageSrc} alt="product-image" />
+                              <img
+                                src={
+                                  imageLoaded && item.imageSrc
+                                    ? `${item.imageSrc}&width=36&height=36`
+                                    : placeholder
+                                }
+                                alt="product-image"
+                                onLoad={handleImageLoad}
+                                loading="lazy"
+                              />
                             </React.Fragment>
                           }
                         />

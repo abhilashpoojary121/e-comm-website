@@ -38,17 +38,12 @@ const ProductPicker = (props) => {
   const [hasMoreData, setHasMoreData] = useState(true);
 
   useEffect(() => {
+    setPage(1);
     const getData = setTimeout(() => {
-      if (searchValue) {
-        getSearchedProducts();
-      }
+      getSearchedProducts();
     }, 1000);
 
     return () => clearTimeout(getData);
-  }, [searchValue]);
-
-  useEffect(() => {
-    setPage(1);
   }, [searchValue]);
 
   //fetching new data for infinitescroll
