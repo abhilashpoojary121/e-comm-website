@@ -2,7 +2,7 @@ import ProductList from "./components/productList";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { ProductsProvider } from "./context/ProductsContext";
 import "./App.css";
-import monkheader from "./assets/media/monkheader.svg";
+import shopifyIcon from "./assets/media/shopifyIcon.svg";
 
 //defining global theme
 const theme = createTheme({
@@ -44,8 +44,13 @@ function App() {
       <ThemeProvider theme={theme}>
         <ProductsProvider>
           <div id="header-container">
-            <img src={monkheader} width="30.97px" height="30.97px" alt="company-header-logo"></img>
-            <h3>Monk Upsell & Cross-sell</h3>
+            <img
+              src={shopifyIcon}
+              width="30.97px"
+              height="30.97px"
+              alt="company-header-logo"
+            ></img>
+            <h3>E-commerce Website</h3>
             <hr />
           </div>
           <ProductList />

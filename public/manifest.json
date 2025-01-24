@@ -3,17 +3,17 @@
   "name": "E-commerce website",
   "icons": [
     {
-      "src": "monkheader.svg",
+      "src": "shopifyIcon.svg",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/svg"
     },
     {
-      "src": "monkheader.svg",
+      "src": "shopifyIcon.svg",
       "type": "image/svg",
       "sizes": "192x192"
     },
     {
-      "src": "monkheader.svg",
+      "src": "shopifyIcon.svg",
       "type": "image/svg",
       "sizes": "512x512"
     }
