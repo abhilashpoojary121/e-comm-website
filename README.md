@@ -3,7 +3,7 @@
 Welcome to the **E-Commerce Bulk Ordering Website**! This platform allows you to easily place bulk orders for various products by selecting from a wide range of available items. The website offers intuitive features to help you add, organize, and customize your order in an efficient and seamless way.
 
 ---
-
+🚀 **Live Demo:** : https://e-comm-7fd8f1.netlify.app/ 
 ## Features
 
 ### 1. **Product Picker**
